@@ -1,5 +1,5 @@
-const submitForm = document.querySelector('');
-const answer = document.getElementById('answer');
+const submitForm = document.querySelector('answer-form');
+const answer = document.getElementById('inputClusterUUID');
 
 submitForm.addEventListener('submit', (e) => {
   e.preventDefault();
