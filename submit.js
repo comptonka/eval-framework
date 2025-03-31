@@ -5,11 +5,7 @@ const fs = require('fs');
 submitForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const formData = {
-    answer: answer.value;
-  }
-
-  fs.writeFile("answer.txt",answer, err => {
+  fs.writeFile("answer.txt",answer.value, err => {
     if (err){
       console.error(err);
     }
