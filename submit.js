@@ -1,4 +1,4 @@
-const submitForm = document.querySelector('answer-form');
+const submitForm = document.querySelector('.answer-form');
 const answer = document.getElementById('inputClusterUUID');
 const fs = require('fs');
 
