@@ -61,7 +61,7 @@ async function getData(){
         }
     }
     try{
-        const response = await fetch("https://192.168.100.6:9200/",options);
+        const response = await fetch("<ELASTICADDRESS>",options);
         const data = await response.json();
         return data.cluster_uuid;
     }
