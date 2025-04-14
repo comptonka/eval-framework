@@ -1,36 +1,77 @@
-//app.js
+const express = require('express');
+const app = express();
+const path = require("path");
+const fs = require("fs");
 
-var http = require('http');
-var fs = require('fs'); // to get data from html file
+app.use(express.json());
 
-http.createServer(function (req, res) {
-    var url = req.url;
-    if (url === "/") {
-        fs.readFile("head.html", function (err, pgres) {
-            if (err) {
-                res.writeHead(404, { 'Content-Type': 'text/plain' });
-                res.write("HEAD.HTML NOT FOUND");
-                res.end();
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.write(pgres);
-                res.end();
+app.get("/", (req,res) => {
+    res.sendFile(path.join(__dirname, "index2.html"));
+});
+
+app.post("/", function(req,res){
+
+    const formData = req.body;
+    //console.log(formData.clusterUUID);
+    compareInput(req,res);
+    //return res.json(formData);
+
+});
+
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
+async function compareInput(req, res){
+
+    const formData = req.body;
+    if (formData.hasOwnProperty("clusterUUID") && typeof formData["clusterUUID"] === "string") {
+        try{
+            const clusterUUID = formData.clusterUUID;
+            const elasticData = await getData();
+            if (elasticData === clusterUUID){
+                const filePath = path.join(__dirname,"data.txt");
+                fs.writeFile(filePath, clusterUUID + "\n", (err) => {
+                    if (err) {
+                        console.error("Error writing to file: ", err);
+                        res.status(500).send("Error saving data.");
+                    } 
+                    else {
+                        console.log("Data saved to file " + clusterUUID);
+                        res.json(elasticData);
+                    }
+                });
             }
-        });
-    } else if (url === "/tailPage") {
-        fs.readFile("tail.html", function (err, pgres) {
-            if (err) {
-                res.writeHead(404, { 'Content-Type': 'text/plain' });
-                res.write("TAIL.HTML NOT FOUND");
-                res.end();
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.write(pgres);
-                res.end();
+            else{
+                res.json("Not correct" + elasticData);
             }
-        });
+        }
+        catch (e){
+
+        }
     }
 
-}).listen(3500, function () {
-    console.log("SERVER STARTED PORT: 3500");
+}
+
+async function getData(){
+     
+    const options = {
+        method: "GET",
+        headers: {
+            "Authorization": "Basic <SECURITY>",
+            "Content-Type": "application/json"
+        }
+    }
+    try{
+        const response = await fetch("https://192.168.100.6:9200/",options);
+        const data = await response.json();
+        return data.cluster_uuid;
+    }
+    catch (error){
+        console.error("Error", error);
+    }
+}
+
+
+
+app.listen(3000, () => {
+    console.log('Server listening on port:', "3000")
 });
