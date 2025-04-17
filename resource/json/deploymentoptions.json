@@ -1,1 +1,29 @@
 
+{
+    "questions": [{
+        "answer": "Self Managed",
+        "question": "I need full control of hardware and software",
+        "id": "self-managed"
+    },
+    {
+        "answer": "Elastic Cloud Serverless",
+        "question": "I want Elastic to handle all operations.",
+        "id": "serverless"
+    },
+    {
+        "answer": "Elastic Cloud Hosted",
+        "question": "I want Cloud Hosting with more Control",
+        "id": "cloud-hosted"
+    },
+    {
+        "answer": "ECE",
+        "question": "I need a multi-tenancy solution",
+        "id": "ece"
+    },
+    {
+        "answer": "ECK",
+        "question": "I need Orchestration",
+        "id": "eck"
+    }
+    ]
+}
