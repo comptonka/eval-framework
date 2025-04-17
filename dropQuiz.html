@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deployment Options Quiz</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script>
+        jQuery.fn.shuffle = function () {
+            var j;
+            for (var i = 0; i < this.length; i++){
+                j = Math.floor(Math.random() * this.length); 
+                $(this[i]).before($(this[j]));
+            }
+            return this;
+        }
+
+    $( function() {
+
+        var numCorrect = 0;
+        var totalQuestions = 0;
+        $.getJSON("json/deploymentoptions.json")
+            .done(function (t){
+                totalQuestions = t.questions.length;
+                $.each(t.questions, function(index,value){
+                    var divElement = $('<div>',{
+                    id: value.id,
+                    class: "ui-widget-content draggable",
+                    text: value.question
+                });
+                divElement.draggable();
+                $('#draggable-widgets').append(divElement);
+
+                var divElement2 = $('<div>',{
+                    id: value.id + "-answer",
+                    class: "ui-widget-content droppable",
+                    text: value.answer
+                });
+                divElement2.droppable({
+                    accept: "#" + value.id,
+                    drop: function( event, ui ) {
+                $( this )
+                    .addClass( "ui-state-highlight" )
+                    .first( "p" )
+                    .html( "Correct!" );
+                    numCorrect = numCorrect+1;
+                    isFinished(numCorrect, totalQuestions);
+                }
+                })
+                $('#droppable-widgets').append(divElement2);
+                });                
+                const parent = $('#draggable-widgets');
+                const divs = parent.children();
+
+                $(divs).shuffle();
+
+                });
+ 
+    } );
+
+    function isFinished(numCorrect, totalQuestions){
+        if (numCorrect == totalQuestions){
+            fetch("<WEBADDRESS>/drag", {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json'}
+                })
+        }
+    }
+    </script>
+  </head>
+  <body>
+    <table>
+        <tr>
+            <td><div id="draggable-widgets"></div></td>
+            <td width="100px"></td>
+            <td><div id="droppable-widgets"></div></td></tr>
+    </table>
+ </body>
+</html>
