@@ -1,1 +1,43 @@
 
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+	font-size: 1em;
+}
+
+.ui-state-highlight{
+    background-color: #24C292;
+    color:black;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
+
+.droppable { 
+    width: 150px; 
+    height: 120px; 
+    padding: 0.5em; 
+    float: none; 
+    margin: 5px; 
+}
+.draggable { 
+    width: 90px; 
+    height: 90px; 
+    padding: 0.5em; 
+    float: none;
+    margin: 5px 5px 5px 0; 
+
+}
+
+#draggable-widgets{
+    display:inline-block;
+    float: none;
+}
+
+#droppable-widgets{
+    display: inline-block;
+    float: none;
+}
