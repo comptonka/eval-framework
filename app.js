@@ -6,6 +6,10 @@ const fs = require("fs");
 app.use(express.json());
 app.use(express.static(__dirname + '/resource'));
 
+app.get("/cloud", (req,res) => {
+    res.sendFile(path.join(__dirname, "cloud.html"));
+});
+
 app.get("/drag", (req,res) => {
     res.sendFile(path.join(__dirname, "dropQuiz.html"));
 });
