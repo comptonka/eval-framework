@@ -4,6 +4,26 @@ const path = require("path");
 const fs = require("fs");
 
 app.use(express.json());
+app.use(express.static(__dirname + '/resource'));
+
+app.get("/drag", (req,res) => {
+    res.sendFile(path.join(__dirname, "dropQuiz.html"));
+});
+
+app.put("/drag", function(req,res){
+    const filePath = path.join(__dirname,"drag.txt");
+    fs.writeFile(filePath, "Quiz Complete", (err) => {
+        if (err) {
+            console.error("Error writing to file: ", err);
+            res.status(500).send("Error saving data.");
+        } 
+        else {
+            console.log("File Saved");
+            res.status(200).send("Good to go");
+        }
+    });
+});
+
 
 app.get("/", (req,res) => {
     res.sendFile(path.join(__dirname, "index.html"));
