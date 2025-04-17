@@ -63,7 +63,7 @@
 
     function isFinished(numCorrect, totalQuestions){
         if (numCorrect == totalQuestions){
-            fetch("<WEBADDRESS>/drag", {
+            fetch("<WEBSERVERADDRESS>/drag", {
                     method: "PUT",
                     headers: { 'Content-Type': 'application/json'}
                 })
