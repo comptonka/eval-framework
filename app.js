@@ -10,6 +10,10 @@ app.get("/cloud", (req,res) => {
     res.sendFile(path.join(__dirname, "cloud.html"));
 });
 
+app.get("/multiquiz", (req,res) => {
+    res.sendFile(path.join(__dirname, "dropQuiz_multi.html"));
+})
+
 app.get("/drag", (req,res) => {
     res.sendFile(path.join(__dirname, "dropQuiz.html"));
 });
