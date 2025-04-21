@@ -1,0 +1,33 @@
+{
+    "questions": [{
+        "answer": "Self Managed",
+        "questions": [  {"question" : "Full control of hardware"},
+                        {"question" : "Full control of software"}],
+        "id": "self-managed"
+    },
+    {
+        "answer": "Elastic Cloud Serverless",
+        "questions": [  {"question" : "Fully Managed"},
+                        {"question" : "Autoscale"}],
+        "id": "serverless"
+    },
+    {
+        "answer": "Elastic Cloud Hosted",
+        "questions": [  {"question" : "Cloud hardware, maintain control of configuration"},
+                        {"question" : "Customized Elastic Cloud Deployments "}],
+        "id": "cloud-hosted"
+    },
+    {
+        "answer": "ECE",
+        "questions": [  {"question" : "Public & Private Clouds"},
+                        {"question" : "Console management of multiple clusters"}],
+        "id": "ece"
+    },
+    {
+        "answer": "ECK",
+        "questions": [  {"question" : "Kubernetes Orchestration"},
+                        {"question" : "K8s"}],
+        "id": "eck"
+    }
+    ]
+}
