@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deployment Options Quiz</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script>
+        jQuery.fn.shuffle = function () {
+            var j;
+            for (var i = 0; i < this.length; i++){
+                j = Math.floor(Math.random() * this.length); 
+                $(this[i]).before($(this[j]));
+            }
+            return this;
+        }
+
+    $( function() {
+
+        var numCorrect = 0;
+        var totalQuestions = 0;
+        $.getJSON("json/deploymentoptions_multi.json")
+            .done(function (t){
+                $.each(t.questions, function(index,value){
+
+                    $.each(value.questions, function(index2, value2){ 
+                      var divElement = $('<div>',{
+                      id: value.id,
+                      class: "ui-widget-content draggable " + value.id,
+                      text: value2.question
+                    })
+
+                    totalQuestions = totalQuestions+1;
+                    divElement.draggable();
+                  $('#draggable-widgets').append(divElement);
+
+                  });
+                  var divElement2 = $('<div>',{
+                      id: value.id + "-answer",
+                      class: "ui-widget-content droppable",
+                      text: value.answer,
+                      html: "<div class='answerTitle'>" + value.answer + "</div><ol class='capabilityList'></ol>"
+                  });
+
+                  divElement2.droppable({
+                      accept: "." + value.id,
+                      drop: function( event, ui ) {
+                  $( this )
+                        .animate({backgroundColor:"#24C292"}, 1)
+                        .animate({backgroundColor:"none"}, 1500)
+
+                    var dropped = ui.draggable;
+                    //$(this).find('.correct').first().append("<div>Correct!</div>");
+
+                    $(this).find(".capabilityList").first().append("<li>" + dropped[0].textContent + "</li>");
+                    dropped.addClass("hidden");
+                    
+                    numCorrect = numCorrect+1;
+                    isFinished(numCorrect, totalQuestions);
+                    
+
+                  }
+                })
+                $('#droppable-widgets').append(divElement2);
+                });
+
+                $($('#draggable-widgets').children()).shuffle();
+
+              });
+ 
+
+    } );
+
+    function isFinished(numCorrect, totalQuestions){
+
+        if (numCorrect == totalQuestions){
+            console.log("Completed!");
+            fetch("http://localhost:3000/drag", {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json'}
+                })
+        }
+    }
+
+    </script>
+  </head>
+  <body>
+    <table>
+        <tr>
+            <td><div id="draggable-widgets"></div></td>
+            <td width="100px"></td>
+            <td><div id="droppable-widgets"></div></td></tr>
+    </table>
+    
+    <br />
+ 
+   
+  </body></html>
